@@ -1,10 +1,15 @@
 package pingamesapi.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import pingamesapi.domain.Compra;
 import pingamesapi.domain.Game;
+import pingamesapi.domain.enums.TipoCompra;
+import pingamesapi.dto.CadastraCompra;
 import pingamesapi.repository.CompraRepository;
 
 @Service
@@ -24,12 +29,13 @@ public class CompraService {
 		return compraRepository.findById(id).get();
 	}
 
-	public Compra create(Compra obj) {
-		obj = processamento(obj);
-		compraRepository.save(obj);
-		return obj;
+	public Compra create(CadastraCompra obj) {
+		Compra buy = fromDTO(obj);
+		buy = processamento(buy);
+		return compraRepository.save(buy);
 	}
 	
+
 	private Compra processamento(Compra obj) {
 		for (Game jogo : obj.getJogo()) {
 			Game aux = gameService.findOne(jogo.getId());
@@ -39,9 +45,21 @@ public class CompraService {
 		}
 		obj.setUsuario(usuarioService.findOne(obj.getUsuario().getId()));
 		obj.getUsuario().getHistorico().add(obj);
-		usuarioService.create(obj.getUsuario());
+		usuarioService.update(obj.getUsuario());
 		return obj;
 		
+	}
+	
+
+	private Compra fromDTO(CadastraCompra obj) {
+		Compra buy = new Compra();
+		buy.setUsuario(usuarioService.findOne(obj.getId_usuario()));
+		List<Game> jogos = new ArrayList<Game>();
+		for (Long id : obj.getJogos()) {
+			jogos.add(gameService.findOne(id));
+		}
+		buy.setStatus(TipoCompra.toEnum(obj.getStatus()));
+		return buy;
 	}
 
 }

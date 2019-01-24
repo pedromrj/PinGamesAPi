@@ -32,7 +32,7 @@ public class Usuario implements Serializable {
 	@OneToMany(mappedBy="usuario")
 	private List<Compra> historico = new ArrayList<Compra>();
 
-	@OneToOne(cascade=CascadeType.ALL)
+	@OneToOne(cascade=CascadeType.PERSIST)
 	@JoinColumn(name="biblioteca_id")
 	private Biblioteca jogos;
 

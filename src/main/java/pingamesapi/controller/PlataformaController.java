@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import pingamesapi.domain.Plataforma;
+import pingamesapi.dto.CadastraPlataforma;
 import pingamesapi.service.PlataformaService;
 
 @RestController
@@ -30,7 +31,7 @@ public class PlataformaController {
 	}
 	
 	@PostMapping(path = "/novo")
-	public ResponseEntity<Plataforma> create(@RequestBody Plataforma obj){
+	public ResponseEntity<Plataforma> create(@RequestBody CadastraPlataforma obj){
 		return new ResponseEntity<Plataforma>(plataformaService.create(obj),HttpStatus.CREATED);
 	}
 	

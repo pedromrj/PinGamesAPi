@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import pingamesapi.domain.Usuario;
+import pingamesapi.dto.CadastraUsuario;
 import pingamesapi.service.UsuarioService;
 
 @RestController
@@ -35,7 +36,7 @@ public class UsuarioController {
 	}
 
 	@PostMapping(path = "/novo")
-	public ResponseEntity<Usuario> create(@RequestBody Usuario obj) {
+	public ResponseEntity<Usuario> create(@RequestBody CadastraUsuario obj) {
 		return new ResponseEntity<Usuario>(usuarioService.create(obj), HttpStatus.CREATED);
 	}
 

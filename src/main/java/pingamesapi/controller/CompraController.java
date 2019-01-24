@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import pingamesapi.domain.Compra;
+import pingamesapi.dto.CadastraCompra;
 import pingamesapi.service.CompraService;
 
 @RestController
@@ -26,7 +27,7 @@ public class CompraController {
 	}
 
 	@PostMapping(path = "/nova")
-	public ResponseEntity<Compra> create(@RequestBody Compra obj) {
+	public ResponseEntity<Compra> create(@RequestBody CadastraCompra obj) {
 		return new ResponseEntity<Compra>(compraService.create(obj), HttpStatus.CREATED);
 	}
 }

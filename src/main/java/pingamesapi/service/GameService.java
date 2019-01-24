@@ -50,6 +50,15 @@ public class GameService {
 	public Game findOne(Long id) {
 		return gameRepository.findById(id).get();
 	}
+	
+	private Plataforma getPlataforma(Long id) {
+		for (Plataforma plat : plataformaService.readAll()) {
+			if(plat.getId() == id) {
+				return plat;
+			}
+		}
+		return null;
+	}
 
 	private Game fromDTO(CadastraGame obj) {
 		Game game = new Game();
@@ -60,7 +69,7 @@ public class GameService {
 		game.setGenero(obj.getGenero());
 		game.setDescricao(obj.getDescricao());
 		
-		Plataforma plat = plataformaService.findOne(obj.getId_empresa());
+		Plataforma plat = getPlataforma(obj.getId_plataforma());
 		plat.getJogos().add(game);
 		plataformaService.update(plat);
 		game.setPlataforma(plat);

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import pingamesapi.domain.Plataforma;
+import pingamesapi.dto.CadastraPlataforma;
 import pingamesapi.repository.PlataformaRepository;
 
 @Service
@@ -18,8 +19,8 @@ public class PlataformaService {
 		return plataformaRepository.findAll();
 	}
 
-	public Plataforma create(Plataforma obj) {
-		return plataformaRepository.save(obj);
+	public Plataforma create(CadastraPlataforma obj) {
+		return plataformaRepository.save(fromDTO(obj));
 	}
 
 	public Plataforma update(Plataforma obj) {
@@ -37,6 +38,12 @@ public class PlataformaService {
 
 	public Plataforma findOne(Long id) {
 		return plataformaRepository.findById(id).get();
+	}
+	
+	private Plataforma fromDTO(CadastraPlataforma obj) {
+		Plataforma plat = new Plataforma();
+		plat.setPlataforma(obj.getPlataforma());
+		return plat;
 	}
 
 }

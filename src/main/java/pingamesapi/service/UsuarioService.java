@@ -5,7 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import pingamesapi.domain.Biblioteca;
 import pingamesapi.domain.Usuario;
+import pingamesapi.dto.CadastraUsuario;
 import pingamesapi.repository.UsuarioRepository;
 
 @Service
@@ -21,12 +23,15 @@ public class UsuarioService {
 		return usuarioRepository.findAll();
 	}
 
-	public Usuario create(Usuario obj) {
-		obj.getJogos().setUsuario(obj);
-		usuarioRepository.save(obj);
-		bibliotecaService.create(obj.getJogos());
-		return obj;
+	public Usuario create(CadastraUsuario userDTO) {
+		Usuario user = fromDTO(userDTO);
+		Biblioteca jogos = new Biblioteca();
+		user.setJogos(jogos);
+		bibliotecaService.create(jogos);
+		return usuarioRepository.save(user);
 	}
+
+	
 
 	public Usuario update(Usuario obj) {
 		return usuarioRepository.save(obj);
@@ -38,6 +43,14 @@ public class UsuarioService {
 
 	public Usuario findOne(Long id) {
 		return usuarioRepository.findById(id).get();
+	}
+	
+	private Usuario fromDTO(CadastraUsuario obj) {
+		Usuario user = new Usuario();
+		user.setNome(obj.getNome());
+		user.setCpf(obj.getCpf());
+		user.setDataNascimento(obj.getDataNascimento());
+		return user;
 	}
 
 }
