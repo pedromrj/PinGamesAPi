@@ -21,12 +21,14 @@ public class CompraService {
 	@Autowired
 	private UsuarioService usuarioService; 
 	
-	
 	@Autowired
 	public CompraRepository compraRepository;
 	
-	public Compra findOne(Long id) {
-		return compraRepository.findById(id).get();
+	public Compra findOne(Long id) throws Exception {
+		if(compraRepository.existsById(id)) {
+			return compraRepository.findById(id).get();
+		}
+		throw new Exception("ID INVALIDO");
 	}
 
 	public Compra create(CadastraCompra obj) {
@@ -37,17 +39,23 @@ public class CompraService {
 	
 
 	private Compra processamento(Compra obj) {
-		for (Game jogo : obj.getJogo()) {
-			Game aux = gameService.findOne(jogo.getId());
-			jogo = aux;
-			jogo.getCompras().add(obj);
-			gameService.update(jogo);
+		if(obj.getStatus() == TipoCompra.QUITADO) {
+			for (Game jogo : obj.getJogo()) {
+				Game aux = gameService.findOne(jogo.getId());
+				jogo = aux;
+				jogo.getCompras().add(obj);
+				gameService.update(jogo);
+			}
+			obj.setUsuario(usuarioService.findOne(obj.getUsuario().getId()));
+			obj.getUsuario().getHistorico().add(obj);
+			usuarioService.update(obj.getUsuario());
 		}
-		obj.setUsuario(usuarioService.findOne(obj.getUsuario().getId()));
-		obj.getUsuario().getHistorico().add(obj);
-		usuarioService.update(obj.getUsuario());
 		return obj;
-		
+	}
+	
+	public void update(Compra obj) {
+		Compra buy = processamento(obj);
+		compraRepository.save(buy);
 	}
 	
 

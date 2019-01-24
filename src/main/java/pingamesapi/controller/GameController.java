@@ -2,6 +2,8 @@ package pingamesapi.controller;
 
 import java.util.List;
 
+import javax.websocket.server.PathParam;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,5 +47,10 @@ public class GameController {
 	public ResponseEntity<Game> update(@PathVariable Long id) {
 		gameService.delete(id);
 		return ResponseEntity.ok().build();
+	}
+	
+	@GetMapping(path = "/{jogo}")
+	public ResponseEntity<List<Game>> findGames(@PathParam(value = "jogo") String nome){
+		return new ResponseEntity<List<Game>>(gameService.findGames(nome), HttpStatus.OK);
 	}
 }

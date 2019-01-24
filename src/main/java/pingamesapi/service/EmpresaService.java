@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import pingamesapi.domain.Empresa;
+import pingamesapi.dto.CadastraEmpresa;
 import pingamesapi.repository.EmpresaRepository;
 
 @Service
@@ -22,10 +23,11 @@ public class EmpresaService {
 		return empresaRepository.findAll();
 	}
 
-	public Empresa create(Empresa obj){
-		return empresaRepository.save(obj);
+	public Empresa create(CadastraEmpresa obj){
+		return empresaRepository.save(fromDTO(obj));
 	}
 
+	
 	public Empresa update(Empresa obj) {
 		return empresaRepository.save(obj);
 	}
@@ -36,5 +38,14 @@ public class EmpresaService {
 		}
 		throw new Exception("NAO ENCONTRADO!!");
 	}
+	
+	private Empresa fromDTO(CadastraEmpresa obj) {
+		Empresa emp = new Empresa();
+		emp.setNome(obj.getNome());
+		emp.setCnpj(obj.getCnpj());
+		emp.setFaturamento(obj.getFaturamento());
+		return emp;
+	}
+
 
 }

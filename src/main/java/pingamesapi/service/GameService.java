@@ -80,4 +80,8 @@ public class GameService {
 		game.setEmpresa(emp);
 		return game;
 	}
+	
+	public List<Game> findGames(String nome) {
+		return gameRepository.findAllNomes(nome);
+	}
 }

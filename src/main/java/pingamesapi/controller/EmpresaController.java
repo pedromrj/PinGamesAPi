@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import pingamesapi.domain.Empresa;
+import pingamesapi.dto.CadastraEmpresa;
 import pingamesapi.service.EmpresaService;
 
 @RestController
@@ -30,30 +31,28 @@ public class EmpresaController {
 	}
 	
 	@PostMapping(path = "/novo")
-	public ResponseEntity<Empresa> create(@RequestBody Empresa obj){
+	public ResponseEntity<Empresa> create(@RequestBody CadastraEmpresa obj){
 		return new ResponseEntity<Empresa>(empresaService.create(obj), HttpStatus.CREATED);
 	}
 	
 	@PutMapping(path = "/{id}/atualizacao")
 	public ResponseEntity<Empresa> update(@PathVariable Long id, @RequestBody Empresa obj){
-		obj.setId(id);
 		try {
+			obj.setId(id);
 			return new ResponseEntity<Empresa>(empresaService.update(obj), HttpStatus.OK);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		return null;
 	}
 	
 	@DeleteMapping(path = "/{id}/deletando")
 	public ResponseEntity<Empresa> update(@PathVariable Long id) {
 		try {
 			empresaService.delete(id);
+			return ResponseEntity.ok().build();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return ResponseEntity.badRequest().build();
 		}
-		return ResponseEntity.ok().build();
+		
 	}
 }

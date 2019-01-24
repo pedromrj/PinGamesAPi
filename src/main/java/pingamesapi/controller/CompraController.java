@@ -23,7 +23,11 @@ public class CompraController {
 	
 	@GetMapping(path = "/{id}")
 	public ResponseEntity<Compra> findOne(@PathVariable Long id){
-		return new ResponseEntity<Compra>(compraService.findOne(id), HttpStatus.OK);
+		try {
+			return new ResponseEntity<Compra>(compraService.findOne(id), HttpStatus.OK);
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().build();
+		}
 	}
 
 	@PostMapping(path = "/nova")
