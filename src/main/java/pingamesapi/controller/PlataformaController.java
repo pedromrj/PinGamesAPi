@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,7 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import pingamesapi.domain.Plataforma;
-import pingamesapi.dto.CadastraPlataforma;
+import pingamesapi.dto.Cadastra.CadastraPlataforma;
+import pingamesapi.dto.Read.ReadPlataforma;
 import pingamesapi.service.PlataformaService;
 
 @RestController
@@ -26,8 +26,8 @@ public class PlataformaController {
 	private PlataformaService plataformaService;
 	
 	@GetMapping(path = "/todas")
-	public ResponseEntity<List<Plataforma>> readAll(){
-		return new ResponseEntity<List<Plataforma>>(plataformaService.readAll(),HttpStatus.OK);
+	public ResponseEntity<List<ReadPlataforma>> readAll(){
+		return new ResponseEntity<List<ReadPlataforma>>(plataformaService.readAll(),HttpStatus.OK);
 	}
 	
 	@PostMapping(path = "/novo")
@@ -39,11 +39,5 @@ public class PlataformaController {
 	public ResponseEntity<Plataforma> update(@PathVariable Long id, @RequestBody Plataforma obj){
 		obj.setId(id);
 		return new ResponseEntity<Plataforma>(plataformaService.update(obj),HttpStatus.OK);
-	}
-	
-	@DeleteMapping(path = "/{id}/deletando")
-	public ResponseEntity<Plataforma> delete(@PathVariable Long id){
-		plataformaService.delete(id);
-		return ResponseEntity.ok().build();
 	}
 }

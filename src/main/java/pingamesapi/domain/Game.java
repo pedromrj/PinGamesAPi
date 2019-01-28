@@ -27,22 +27,22 @@ public class Game implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@Column(name="game_nome")
+	@Column(name="game_nome", unique = true , length = 150 , nullable = false)
 	private String nome;
 
-	@Column(name = "game_lancamento", length = 8)
+	@Column(name = "game_lancamento", length = 8, nullable = false , unique = true)
 	private String dataLancamento;
 	
 	@Column(name = "game_preco",precision = 2)
 	private double preco;
 	
-	@Column(name = "game_genero")
+	@Column(name = "game_genero", nullable = false)
 	private String genero;
 
-	@Column(name = "game_faixa_etaria")
+	@Column(name = "game_faixa_etaria", nullable = false)
 	private Short faixaEtaria;
 	
-	@Column(name = "game_descricao", unique = true , length = 150)
+	@Column(name = "game_descricao", unique = true , length = 150, nullable = false)
 	private String descricao;
 	
 	@JsonIgnore

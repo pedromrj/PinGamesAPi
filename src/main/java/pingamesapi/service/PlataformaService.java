@@ -1,22 +1,25 @@
 package pingamesapi.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import pingamesapi.domain.Plataforma;
-import pingamesapi.dto.CadastraPlataforma;
+import pingamesapi.dto.Cadastra.CadastraPlataforma;
+import pingamesapi.dto.Read.ReadPlataforma;
 import pingamesapi.repository.PlataformaRepository;
+import pingamesapi.service.exceptions.ObjectNotFoundException;
 
 @Service
 public class PlataformaService {
-	
+
 	@Autowired
 	private PlataformaRepository plataformaRepository;
-	
-	public List<Plataforma> readAll(){
-		return plataformaRepository.findAll();
+
+	public List<ReadPlataforma> readAll() {
+		return buildListDTO(plataformaRepository.findAll());
 	}
 
 	public Plataforma create(CadastraPlataforma obj) {
@@ -24,26 +27,36 @@ public class PlataformaService {
 	}
 
 	public Plataforma update(Plataforma obj) {
-		if(plataformaRepository.existsById(obj.getId())) {
+		if (plataformaRepository.existsById(obj.getId())) {
 			return plataformaRepository.save(obj);
 		}
-		return obj;
-	}
 
-	public void delete(Long id) {
-		if(plataformaRepository.existsById(id)) {
-			plataformaRepository.deleteById(id);
-		}
+		throw new ObjectNotFoundException(
+				"Empresa não encotrada! id:" + obj.getId() + ", Tipo:" + Plataforma.class.getName());
 	}
 
 	public Plataforma findOne(Long id) {
-		return plataformaRepository.findById(id).get();
+		if (plataformaRepository.existsById(id)) {
+			return plataformaRepository.findById(id).get();
+		}
+		throw new ObjectNotFoundException("Empresa não encotrada! id:" + id + ", Tipo:" + Plataforma.class.getName());
 	}
-	
+
 	private Plataforma fromDTO(CadastraPlataforma obj) {
 		Plataforma plat = new Plataforma();
 		plat.setPlataforma(obj.getPlataforma());
 		return plat;
+	}
+
+	private List<ReadPlataforma> buildListDTO(List<Plataforma> platBD) {
+		List<ReadPlataforma> plataformas = new ArrayList<ReadPlataforma>();
+		for (Plataforma plataforma : platBD) {
+			ReadPlataforma aux = new ReadPlataforma();
+			aux.setId(plataforma.getId());
+			aux.setNome(plataforma.getPlataforma());
+			plataformas.add(aux);
+		}
+		return plataformas;
 	}
 
 }

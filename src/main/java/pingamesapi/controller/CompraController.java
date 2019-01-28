@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import pingamesapi.domain.Compra;
-import pingamesapi.dto.CadastraCompra;
+import pingamesapi.dto.Cadastra.CadastraCompra;
 import pingamesapi.service.CompraService;
 
 @RestController
@@ -23,11 +23,7 @@ public class CompraController {
 	
 	@GetMapping(path = "/{id}")
 	public ResponseEntity<Compra> findOne(@PathVariable Long id){
-		try {
-			return new ResponseEntity<Compra>(compraService.findOne(id), HttpStatus.OK);
-		} catch (Exception e) {
-			return ResponseEntity.badRequest().build();
-		}
+		return new ResponseEntity<Compra>(compraService.findOne(id), HttpStatus.OK);
 	}
 
 	@PostMapping(path = "/nova")

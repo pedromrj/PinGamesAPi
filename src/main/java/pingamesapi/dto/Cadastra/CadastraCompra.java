@@ -1,4 +1,4 @@
-package pingamesapi.dto;
+package pingamesapi.dto.Cadastra;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -9,8 +9,10 @@ import org.springframework.stereotype.Service;
 import pingamesapi.domain.Compra;
 import pingamesapi.domain.Game;
 import pingamesapi.domain.enums.TipoCompra;
-import pingamesapi.dto.CadastraCompra;
+import pingamesapi.dto.Cadastra.CadastraCompra;
+import pingamesapi.dto.Read.ReadCompra;
 import pingamesapi.repository.CompraRepository;
+import pingamesapi.service.exceptions.ObjectNotFoundException;
 
 @Service
 public class CompraService {
@@ -24,11 +26,11 @@ public class CompraService {
 	@Autowired
 	public CompraRepository compraRepository;
 	
-	public Compra findOne(Long id) throws Exception {
+	public Compra findOne(Long id) {
 		if(compraRepository.existsById(id)) {
 			return compraRepository.findById(id).get();
 		}
-		throw new Exception("ID INVALIDO");
+		throw new ObjectNotFoundException("Empresa não encotrada! id:" + id + ", Tipo:" + Compra.class.getName());
 	}
 
 	public Compra create(CadastraCompra obj) {
@@ -46,7 +48,7 @@ public class CompraService {
 				jogo.getCompras().add(obj);
 				gameService.update(jogo);
 			}
-			obj.setUsuario(usuarioService.findOne(obj.getUsuario().getId()));
+			obj.setUsuario(usuarioService.findById(obj.getUsuario().getId()));
 			obj.getUsuario().getHistorico().add(obj);
 			usuarioService.update(obj.getUsuario());
 		}
@@ -61,7 +63,7 @@ public class CompraService {
 
 	private Compra fromDTO(CadastraCompra obj) {
 		Compra buy = new Compra();
-		buy.setUsuario(usuarioService.findOne(obj.getId_usuario()));
+		buy.setUsuario(usuarioService.findById(obj.getId_usuario()));
 		List<Game> jogos = new ArrayList<Game>();
 		for (Long id : obj.getJogos()) {
 			jogos.add(gameService.findOne(id));
@@ -69,5 +71,14 @@ public class CompraService {
 		buy.setStatus(TipoCompra.toEnum(obj.getStatus()));
 		return buy;
 	}
-
+	
+	public List<ReadCompra> buildDTO(List<Compra> compraDB) {
+		List<ReadCompra> historico = new ArrayList<ReadCompra>();
+			for (Compra compra: compraDB) {
+				ReadCompra aux = new ReadCompra();
+				aux.setGames((gameService.buildDTO(compra.getJogo())));
+				historico.add(aux);
+			}
+		return historico;
+	}
 }

@@ -21,10 +21,10 @@ public class Empresa implements Serializable{
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 	
-	@Column(name="empresa_nome")
+	@Column(name="empresa_nome", unique = true , nullable = false , length = 100)
 	private String nome;
 	
-	@Column(name="empresa_cnpj")
+	@Column(name="empresa_cnpj", unique = true , nullable = false , length = 14)
 	private String cnpj;
 	
 	@OneToMany(mappedBy="empresa")

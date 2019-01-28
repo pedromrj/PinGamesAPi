@@ -21,7 +21,7 @@ public class Plataforma implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
-	@Column(name = "plataforma", unique = true)
+	@Column(name = "plataforma", unique = true, nullable = false, length = 25)
 	private String tipo;
 
 	@OneToMany(mappedBy = "plataforma")

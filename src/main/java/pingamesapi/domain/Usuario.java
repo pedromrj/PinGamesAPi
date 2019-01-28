@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,10 +24,13 @@ public class Usuario implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
+	@Column (unique = true,nullable = false , length = 150)
 	private String nome;
-
+	
+	@Column (unique = true,nullable = false , length = 11)
 	private String cpf;
 
+	@Column (unique = true,nullable = false , length = 10)
 	private String dataNascimento;
 	
 	@OneToMany(mappedBy="usuario")
