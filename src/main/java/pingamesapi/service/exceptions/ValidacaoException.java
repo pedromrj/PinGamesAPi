@@ -1,7 +1,9 @@
-package pingamesapi.controller.exceptions;
+package pingamesapi.service.exceptions;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import pingamesapi.controller.exceptions.ErrorValidacao;
 
 public class ValidacaoException extends RuntimeException {
 	private static final long serialVersionUID = 1L;

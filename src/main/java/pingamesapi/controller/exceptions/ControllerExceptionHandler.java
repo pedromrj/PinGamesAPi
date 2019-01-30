@@ -12,7 +12,9 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import pingamesapi.service.exceptions.LibraryHasGameException;
 import pingamesapi.service.exceptions.ObjectNotFoundException;
+import pingamesapi.service.exceptions.ValidacaoException;
 
 @ControllerAdvice
 public class ControllerExceptionHandler {
@@ -39,6 +41,12 @@ public class ControllerExceptionHandler {
 		}
 		err.setErrors(erros);
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+	}
+	
+	@ExceptionHandler(LibraryHasGameException.class)
+	public ResponseEntity<PadraoError> libraryHasGame(LibraryHasGameException e, HttpServletRequest request) {
+		PadraoError error = new PadraoError(HttpStatus.BAD_REQUEST.value(),e.getMessage(),System.currentTimeMillis());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
 	}
 
 }

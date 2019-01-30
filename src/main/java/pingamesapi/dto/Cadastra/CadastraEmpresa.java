@@ -1,32 +1,33 @@
 package pingamesapi.dto.Cadastra;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 public class CadastraEmpresa {
 	
 	@NotBlank
-	private String nome;
+	private String nomeEmpresa;
 	
 	@NotBlank
-	private String cnpj;
+	private String cnpjEmpresa;
 	
-	@NotBlank
+	@NotNull
 	private double faturamento;
 
 	public String getNome() {
-		return nome;
+		return nomeEmpresa;
 	}
 
 	public void setNome(String nome) {
-		this.nome = nome;
+		this.nomeEmpresa = nome;
 	}
 
 	public String getCnpj() {
-		return cnpj;
+		return cnpjEmpresa;
 	}
 
 	public void setCnpj(String cnpj) {
-		this.cnpj = cnpj;
+		this.cnpjEmpresa = cnpj;
 	}
 
 	public double getFaturamento() {

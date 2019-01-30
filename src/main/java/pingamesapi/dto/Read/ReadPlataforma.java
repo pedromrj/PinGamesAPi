@@ -4,7 +4,7 @@ public class ReadPlataforma {
 	
 	private Long id;
 	
-	private String nome;
+	private String plataforma;
 
 	public Long getId() {
 		return id;
@@ -14,12 +14,12 @@ public class ReadPlataforma {
 		this.id = id;
 	}
 
-	public String getNome() {
-		return nome;
+	public String getPlataforma() {
+		return plataforma;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setPlataforma(String nome) {
+		this.plataforma = nome;
 	}
 
 }

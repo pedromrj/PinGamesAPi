@@ -2,24 +2,24 @@ package pingamesapi.dto.Read;
 
 public class ReadEmpresa {
 	
-	private Long id;
+	private Long idEmpreas;
 	
-	private String nome;
+	private String nomeEmpresa;
 
 	public Long getId() {
-		return id;
+		return idEmpreas;
 	}
 
 	public void setId(Long id) {
-		this.id = id;
+		this.idEmpreas = id;
 	}
 
 	public String getNome() {
-		return nome;
+		return nomeEmpresa;
 	}
 
 	public void setNome(String nome) {
-		this.nome = nome;
+		this.nomeEmpresa = nome;
 	}
 
 }

@@ -2,6 +2,8 @@ package pingamesapi.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,22 +27,22 @@ public class EmpresaController {
 	@Autowired
 	private EmpresaService empresaService;
 	
-	@GetMapping(path = "/{id}")
+	@GetMapping("{id}")
 	public ResponseEntity<Empresa> findOne(@PathVariable Long id) {
 		return new ResponseEntity<Empresa>(empresaService.findOne(id),HttpStatus.OK);
 	}
 	
-	@GetMapping(path = "/todos")
+	@GetMapping
 	public ResponseEntity<List<ReadEmpresa>> readAll(){
 		return new ResponseEntity<List<ReadEmpresa>>(empresaService.readAll(),HttpStatus.OK);
 	}
 	
-	@PostMapping(path = "/novo")
-	public ResponseEntity<Empresa> create(@RequestBody CadastraEmpresa obj){
+	@PostMapping
+	public ResponseEntity<Empresa> create(@Valid @RequestBody CadastraEmpresa obj){
 		return new ResponseEntity<Empresa>(empresaService.create(obj), HttpStatus.CREATED);
 	}
 	
-	@PutMapping(path = "/{id}/atualizacao")
+	@PutMapping("{id}")
 	public ResponseEntity<Empresa> update(@PathVariable Long id, @RequestBody Empresa obj){
 		return new ResponseEntity<Empresa>(empresaService.update(obj), HttpStatus.OK);
 	}

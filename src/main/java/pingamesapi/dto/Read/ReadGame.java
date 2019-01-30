@@ -3,68 +3,75 @@ package pingamesapi.dto.Read;
 import pingamesapi.domain.Game;
 
 public class ReadGame {
-	
-	private Long id;
-	
-	private String nome;
-	
-	private String genero;
-	
-	private Short faixa;
-	
-	private double preco;
-	
+
+	private Long idGame;
+
+	private String nomeGame;
+
+	private String generoGame;
+
+	private Short faixaEtariaGame;
+
+	private double precoGame;
+
 	public ReadGame() {
-		
+
+	}
+
+	public ReadGame(Long idGame, String nomeGame, String generoGame, Short faixaEtariaGame, double precoGame) {
+		this.idGame = idGame;
+		this.nomeGame = nomeGame;
+		this.generoGame = generoGame;
+		this.faixaEtariaGame = faixaEtariaGame;
+		this.precoGame = precoGame;
 	}
 
 	public ReadGame(Game game) {
-		this.id = game.getId();
-		this.nome = game.getNome();
-		this.genero = game.getGenero();
-		this.faixa = game.getFaixaEtaria();
-		this.preco = game.getPreco();
+		this.idGame = game.getId();
+		this.nomeGame = game.getNome();
+		this.faixaEtariaGame = game.getFaixaEtaria();
+		this.generoGame = game.getGenero();
+		this.precoGame = game.getPreco();
 	}
 
-	public Long getId() {
-		return id;
+	public Long getIdGame() {
+		return idGame;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setIdGame(Long idGame) {
+		this.idGame = idGame;
 	}
 
-	public String getNome() {
-		return nome;
+	public String getNomeGame() {
+		return nomeGame;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setNomeGame(String nomeGame) {
+		this.nomeGame = nomeGame;
 	}
 
-	public String getGenero() {
-		return genero;
+	public String getGeneroGame() {
+		return generoGame;
 	}
 
-	public void setGenero(String genero) {
-		this.genero = genero;
+	public void setGeneroGame(String generoGame) {
+		this.generoGame = generoGame;
 	}
 
-	public Short getFaixa() {
-		return faixa;
+	public Short getFaixaEtariaGame() {
+		return faixaEtariaGame;
 	}
 
-	public void setFaixa(Short faixa) {
-		this.faixa = faixa;
+	public void setFaixaEtariaGame(Short faixaEtariaGame) {
+		this.faixaEtariaGame = faixaEtariaGame;
 	}
 
-	public double getPreco() {
-		return preco;
+	public double getPrecoGame() {
+		return precoGame;
 	}
 
-	public void setPreco(double preco) {
-		this.preco = preco;
+	public void setPrecoGame(double precoGame) {
+		this.precoGame = precoGame;
 	}
-	
-	
+
 }

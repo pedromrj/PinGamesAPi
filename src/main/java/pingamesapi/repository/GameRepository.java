@@ -18,6 +18,16 @@ public interface GameRepository extends JpaRepository<Game, Long>{
 			)
 	List<Game> findAllNomes(@Param("nome") String nome);
 	
-	//List<Game> findByNome(String nome);
+	@Query(
+			value = "SELECT * FROM games WHERE game_genero = :genero",
+			nativeQuery = true
+			)
+	List<Game> findAllByGenero(@Param("genero") String nome);
+	
+	@Query(
+			value = "SELECT * FROM games WHERE (select substring(game_lancamento,5,8) FROM games) = :ano",
+			nativeQuery = true
+			)
+	List<Game> findAllByAno(@Param("ano") String ano);
 	
 }

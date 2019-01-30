@@ -38,7 +38,7 @@ public class Usuario implements Serializable {
 
 	@OneToOne(cascade=CascadeType.PERSIST)
 	@JoinColumn(name="biblioteca_id")
-	private Biblioteca jogos;
+	private Biblioteca biblioteca;
 
 	public Usuario() {
 
@@ -91,12 +91,12 @@ public class Usuario implements Serializable {
 		this.historico = historico;
 	}
 
-	public Biblioteca getJogos() {
-		return jogos;
+	public Biblioteca getBiblioteca() {
+		return biblioteca;
 	}
 
-	public void setJogos(Biblioteca jogos) {
-		this.jogos = jogos;
+	public void setBiblioteca(Biblioteca jogos) {
+		this.biblioteca = jogos;
 	}
 
 	@Override

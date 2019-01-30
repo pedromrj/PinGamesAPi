@@ -22,7 +22,7 @@ public class Plataforma implements Serializable {
 	private Long id;
 	
 	@Column(name = "plataforma", unique = true, nullable = false, length = 25)
-	private String tipo;
+	private String plataforma;
 
 	@OneToMany(mappedBy = "plataforma")
 	private List<Game> jogos = new ArrayList<Game>();
@@ -34,7 +34,7 @@ public class Plataforma implements Serializable {
 
 	public Plataforma(Long id, String tipo) {
 		this.id = id;
-		this.tipo = tipo;
+		this.plataforma = tipo;
 	}
 
 	public Long getId() {
@@ -54,11 +54,11 @@ public class Plataforma implements Serializable {
 	}
 
 	public String getPlataforma() {
-		return tipo;
+		return plataforma;
 	}
 
 	public void setPlataforma(String plataforma) {
-		this.tipo = plataforma;
+		this.plataforma = plataforma;
 	}
 
 	@Override

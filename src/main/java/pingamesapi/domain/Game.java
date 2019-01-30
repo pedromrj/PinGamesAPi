@@ -81,6 +81,16 @@ public class Game implements Serializable {
 		this.empresa = empresa;
 	}
 
+	public Game(String nome, String dataLancamento, Short faixaEtaria, double preco, String descricao,
+			String genero) {
+		this.nome = nome;
+		this.dataLancamento = dataLancamento;
+		this.preco = preco;
+		this.genero = genero;
+		this.faixaEtaria = faixaEtaria;
+		this.descricao = descricao;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -160,7 +170,8 @@ public class Game implements Serializable {
 	public void setCompras(List<Compra> compra) {
 		this.compras = compra;
 	}
-
+	
+	@JsonIgnore
 	public List<Biblioteca> getJogos() {
 		return bibliotecas;
 	}

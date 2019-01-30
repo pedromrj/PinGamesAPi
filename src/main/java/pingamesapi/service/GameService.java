@@ -3,6 +3,7 @@ package pingamesapi.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -29,9 +30,8 @@ public class GameService {
 	private GameRepository gameRepository;
 	
 	public List<ReadGame> readAll(){
-		return buildDTO(gameRepository.findAll());
+		return listBuildDTO(gameRepository.findAll());
 	}
-
 	
 	public Game create(CadastraGame obj) {
 		return gameRepository.save(fromDTO(obj)); 
@@ -45,32 +45,22 @@ public class GameService {
 	}
 	
 	public Game findOne(Long id) {
-		return gameRepository.findById(id).get();
+		if(gameRepository.existsById(id)) {
+			return gameRepository.findById(id).get();
+		}
+		throw new ObjectNotFoundException("Object não encontrado! id:" + id + ", Tipo:" + Game.class.getName());
+		
 	}
 
-	private Game fromDTO(CadastraGame obj) {
-		Game game = new Game();
-		game.setNome(obj.getNome());
-		game.setDataLancamento(obj.getDataLancamento());
-		game.setPreco(obj.getPreco());
-		game.setFaixaEtaria(obj.getFaixaEtaria());
-		game.setGenero(obj.getGenero());
-		game.setDescricao(obj.getDescricao());
+	private Game fromDTO(CadastraGame obj) { 
+		Game game = new Game(obj.getNome(),obj.getDataLancamento(),obj.getFaixaEtaria(),obj.getPreco(),obj.getDescricao(),obj.getGenero());
 		
-		if(plataformaService.findOne(obj.getId_plataforma()) == null) {
-			throw new ObjectNotFoundException("Plataforma não encontrado! id:" + obj.getId_plataforma() + ", Tipo:" + Game.class.getName());
-		}
-		
-		Plataforma plat = plataformaService.findOne(obj.getId_plataforma());
+		Plataforma plat = plataformaService.findOne(obj.getPlataformaId());
 		plat.getJogos().add(game);
 		plataformaService.update(plat);
 		game.setPlataforma(plat);
-
-		if(empresaService.findOne(obj.getId_empresa()) == null) {
-			throw new ObjectNotFoundException("Empresa não encotrada! id:" + obj.getId_empresa() + ", Tipo:" + game.getClass().getName());
-		}
 		
-		Empresa emp = empresaService.findOne(obj.getId_empresa());
+		Empresa emp = empresaService.findOne(obj.getEmpresaId());
 		emp.getJogos().add(game);
 		empresaService.update(emp);
 		game.setEmpresa(emp);
@@ -81,17 +71,18 @@ public class GameService {
 		return gameRepository.findAllNomes(nome);
 	}
 	
-	public List<ReadGame> buildDTO(List<Game> gamesDB) {
+	public List<ReadGame> listBuildDTO(List<Game> gamesDB) {
 		List<ReadGame> games = new ArrayList<ReadGame>();
 		for (Game game : gamesDB) {
-			ReadGame aux = new ReadGame();
-			aux.setId(game.getId());
-			aux.setNome(game.getNome());
-			aux.setGenero(game.getGenero());
-			aux.setFaixa(game.getFaixaEtaria());
-			games.add(aux);
+			games.add(buildDTO(game));
 		}
 		return games;
+	}
+	
+	public ReadGame buildDTO(Game game) {
+		ModelMapper model = new ModelMapper();
+		ReadGame readGame = model.map(game, ReadGame.class);
+		return readGame;
 	}
 
 

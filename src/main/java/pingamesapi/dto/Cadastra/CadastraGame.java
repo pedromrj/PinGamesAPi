@@ -1,6 +1,7 @@
 package pingamesapi.dto.Cadastra;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 public class CadastraGame {
 	
@@ -10,7 +11,7 @@ public class CadastraGame {
 	@NotBlank
 	private String dataLancamento;
 	
-	@NotBlank
+	@NotNull
 	private double preco;
 	
 	@NotBlank
@@ -23,10 +24,10 @@ public class CadastraGame {
 	private String descricao;
 	
 	@NotBlank
-	private Long id_plataforma;
+	private Long plataformaId;
 	
 	@NotBlank
-	private Long id_empresa;
+	private Long empresaId;
 
 	public String getNome() {
 		return nome;
@@ -76,20 +77,21 @@ public class CadastraGame {
 		this.descricao = descricao;
 	}
 
-	public Long getId_plataforma() {
-		return id_plataforma;
+	public Long getPlataformaId() {
+		return plataformaId;
 	}
 
-	public void setId_plataforma(Long id_plataforma) {
-		this.id_plataforma = id_plataforma;
+	public void setPlataformaId(Long plataformaId) {
+		this.plataformaId = plataformaId;
 	}
 
-	public Long getId_empresa() {
-		return id_empresa;
+	public Long getEmpresaId() {
+		return empresaId;
 	}
 
-	public void setId_empresa(Long id_empresa) {
-		this.id_empresa = id_empresa;
+	public void setEmpresaId(Long empresaId) {
+		this.empresaId = empresaId;
 	}
+	
 	
 }

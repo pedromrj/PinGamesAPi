@@ -2,6 +2,8 @@ package pingamesapi.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,17 +27,22 @@ public class PlataformaController {
 	@Autowired
 	private PlataformaService plataformaService;
 	
-	@GetMapping(path = "/todas")
+	@GetMapping
 	public ResponseEntity<List<ReadPlataforma>> readAll(){
 		return new ResponseEntity<List<ReadPlataforma>>(plataformaService.readAll(),HttpStatus.OK);
 	}
 	
-	@PostMapping(path = "/novo")
-	public ResponseEntity<Plataforma> create(@RequestBody CadastraPlataforma obj){
+	@GetMapping("{id}")
+	public ResponseEntity<Plataforma> findOne(@PathVariable Long id) {
+		return new ResponseEntity<Plataforma> (plataformaService.findOne(id),HttpStatus.OK);
+	}
+	
+	@PostMapping
+	public ResponseEntity<Plataforma> create(@Valid @RequestBody CadastraPlataforma obj){
 		return new ResponseEntity<Plataforma>(plataformaService.create(obj),HttpStatus.CREATED);
 	}
 	
-	@PutMapping(path = "/{id}/atualizaca")
+	@PutMapping("{id}")
 	public ResponseEntity<Plataforma> update(@PathVariable Long id, @RequestBody Plataforma obj){
 		obj.setId(id);
 		return new ResponseEntity<Plataforma>(plataformaService.update(obj),HttpStatus.OK);

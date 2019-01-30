@@ -37,4 +37,6 @@ public class CadastraUsuario {
 		this.dataNascimento = dataNascimento;
 	}
 
+	
+
 }

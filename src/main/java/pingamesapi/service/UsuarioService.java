@@ -3,28 +3,22 @@ package pingamesapi.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import pingamesapi.controller.exceptions.ErrorValidacao;
-import pingamesapi.controller.exceptions.ValidacaoException;
 import pingamesapi.domain.Biblioteca;
 import pingamesapi.domain.Usuario;
 import pingamesapi.dto.Cadastra.CadastraUsuario;
 import pingamesapi.dto.Read.ReadUsuario;
 import pingamesapi.repository.UsuarioRepository;
 import pingamesapi.service.exceptions.ObjectNotFoundException;
+import pingamesapi.service.exceptions.ValidacaoException;
+import pingamesapi.service.utils.CpfAndCnpj;
 
 @Service
 public class UsuarioService {
-	private static final int[] PESO_CPF = { 11, 10, 9, 8, 7, 6, 5, 4, 3, 2 };
-	public static final Integer DIVISOR = 11;
-
-	@Autowired
-	private CompraService compraService;
-
-	@Autowired
-	private GameService gameService;
 
 	@Autowired
 	private BibliotecaService bibliotecaService;
@@ -40,7 +34,7 @@ public class UsuarioService {
 		ValidUser(userDTO);
 		Usuario user = fromDTO(userDTO);
 		Biblioteca jogos = new Biblioteca();
-		user.setJogos(jogos);
+		user.setBiblioteca(jogos);
 		bibliotecaService.create(jogos);
 		return usuarioRepository.save(user);
 	}
@@ -49,9 +43,9 @@ public class UsuarioService {
 		return usuarioRepository.save(obj);
 	}
 
-	public ReadUsuario findOne(Long id) {
+	public Usuario findOne(Long id) {
 		if (usuarioRepository.existsById(id)) {
-			return buildDTO(usuarioRepository.findById(id).get());
+			return usuarioRepository.findById(id).get();
 		}
 		throw new ObjectNotFoundException("Usuario não encotrada! id:" + id + ", Tipo:" + Usuario.class.getName());
 	}
@@ -64,16 +58,14 @@ public class UsuarioService {
 	}
 
 	private ReadUsuario buildDTO(Usuario usuario) {
-		ReadUsuario user = new ReadUsuario(usuario.getNome(), usuario.getCpf(), usuario.getDataNascimento(),
-				gameService.buildDTO(usuario.getJogos().getJogos()), compraService.buildDTO(usuario.getHistorico()));
+		ModelMapper model = new ModelMapper();
+		ReadUsuario user = model.map(usuario, ReadUsuario.class);
 		return user;
 	}
 
 	private Usuario fromDTO(CadastraUsuario obj) {
-		Usuario user = new Usuario();
-		user.setNome(obj.getNome());
-		user.setCpf(obj.getCpf());
-		user.setDataNascimento(obj.getDataNascimento());
+		ModelMapper model = new ModelMapper();
+		Usuario user = model.map(obj, Usuario.class);
 		return user;
 	}
 
@@ -87,48 +79,6 @@ public class UsuarioService {
 		return true;
 	}
 
-	private boolean ValidCpf(String cpf) {
-		if (cpf.length() != 11) {
-			return false;
-		}
-		int cont = 1;
-		char[] aux = cpf.toCharArray();
-		int J;
-		int K;
-		int soma = 0;
-		for (int i = 0; i <= 8; i++) {
-			soma += PESO_CPF[cont] * Integer.parseInt(String.valueOf(aux[i]));
-			cont++;
-		}
-		if (soma % DIVISOR == 1 || soma % DIVISOR == 0) {
-			J = 0;
-		} else {
-			J = DIVISOR - (soma % DIVISOR);
-		}
-
-		soma = 0;
-		cont = 0;
-		for (int i = 0; i <= 9; i++) {
-			if (i == 9) {
-				soma += J * PESO_CPF[9];
-			} else {
-				soma += PESO_CPF[i] * Integer.parseInt(String.valueOf(aux[i]));
-			}
-			cont++;
-		}
-		if (soma % DIVISOR == 1 || soma % DIVISOR == 0) {
-			K = 0;
-		} else {
-			K = DIVISOR - (soma % DIVISOR);
-		}
-
-		if (J == Integer.parseInt(String.valueOf(aux[9])) && K == Integer.parseInt(String.valueOf(aux[10]))) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
 	private boolean ValidUser(CadastraUsuario userDTO) {
 		List<ErrorValidacao> erros = new ArrayList<ErrorValidacao>();
 		if (!heInteiro(userDTO.getNome())) {
@@ -137,7 +87,7 @@ public class UsuarioService {
 		if (heInteiro(userDTO.getCpf())) {
 			erros.add(new ErrorValidacao("CPF", "SÓ NUMEROS!!"));
 		}
-		if (!ValidCpf(userDTO.getCpf())) {
+		if (!CpfAndCnpj.ValidCpf(userDTO.getCpf())) {
 			erros.add(new ErrorValidacao("CPF", "CPF É INVALIDO!!"));
 		}
 

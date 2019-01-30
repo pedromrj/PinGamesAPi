@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import pingamesapi.domain.Usuario;
 import pingamesapi.dto.Cadastra.CadastraUsuario;
-import pingamesapi.dto.Read.ReadUsuario;
 import pingamesapi.service.UsuarioService;
 
 @RestController
@@ -25,17 +24,17 @@ public class UsuarioController {
 	@Autowired
 	private UsuarioService usuarioService;
 
-	@GetMapping(path = "/{id}")
-	public ResponseEntity<ReadUsuario> findOne(@PathVariable Long id) {
-		return new ResponseEntity<ReadUsuario>(usuarioService.findOne(id), HttpStatus.OK);
+	@GetMapping("{id}")
+	public ResponseEntity<Usuario> findOne(@PathVariable Long id) {
+		return new ResponseEntity<Usuario>(usuarioService.findOne(id), HttpStatus.OK);
 	}
 
-	@PostMapping(path = "/novo")
+	@PostMapping
 	public ResponseEntity<Usuario> create(@RequestBody @Valid CadastraUsuario obj) {
 		return new ResponseEntity<Usuario>(usuarioService.create(obj), HttpStatus.CREATED);
 	}
 
-	@PutMapping(path = "/{id}/atualizaca")
+	@PutMapping("{id}")
 	public ResponseEntity<Usuario> update(@PathVariable Long id, @RequestBody Usuario obj) {
 		obj.setId(id);
 		return new ResponseEntity<Usuario>(usuarioService.update(obj), HttpStatus.OK);

@@ -47,6 +47,14 @@ public class Compra implements Serializable {
 		this.usuario = usuario;
 		this.status = TipoCompra.PEDENTE.getCod();
 	}
+	
+	public double getValorTotal() {
+		double soma = 0;
+		for (Game game : jogo) {
+			soma += game.getPreco();
+		}
+		return soma;
+	}
 
 	public Long getId() {
 		return id;

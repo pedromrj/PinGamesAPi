@@ -5,22 +5,22 @@ import java.util.List;
 
 public class ReadCompra {
 	
-	private List<ReadGame> games = new ArrayList<ReadGame>();
+	private List<ReadGame> gamesGame = new ArrayList<ReadGame>();
 	
 	public double getValorTotal() {
 		double soma = 0;
-		for (ReadGame game : games) {
-			soma = game.getPreco();
+		for (ReadGame game : gamesGame) {
+			soma = game.getPrecoGame();
 		}
 		return soma;
 	}
 
 	public List<ReadGame> getGames() {
-		return games;
+		return gamesGame;
 	}
 
 	public void setGames(List<ReadGame> games) {
-		this.games = games;
+		this.gamesGame = games;
 	}
 
 }

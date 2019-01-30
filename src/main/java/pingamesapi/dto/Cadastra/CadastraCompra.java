@@ -5,34 +5,45 @@ import java.util.List;
 
 public class CadastraCompra {
 
-	private Long id_usuario;
+	private Long usuarioId;
 
 	private List<Long> jogos = new ArrayList<Long>();
 
 	private Integer status;
-
-	public Long getId_usuario() {
-		return id_usuario;
+	
+	public CadastraCompra() {
+		
 	}
 
-	public void setId_usuario(Long id_usuario) {
-		this.id_usuario = id_usuario;
+	public CadastraCompra(Long usuarioIdUsuario, List<Long> jogosGame, Integer statusCompra) {
+		super();
+		this.usuarioId = usuarioIdUsuario;
+		this.jogos = jogosGame;
+		this.status = statusCompra;
 	}
 
-	public List<Long> getJogos() {
+	public Long getUsuarioIdUsuario() {
+		return usuarioId;
+	}
+
+	public void setUsuarioIdUsuario(Long usuarioIdUsuario) {
+		this.usuarioId = usuarioIdUsuario;
+	}
+
+	public List<Long> getJogosGame() {
 		return jogos;
 	}
 
-	public void setJogos(List<Long> jogos) {
-		this.jogos = jogos;
+	public void setJogosGame(List<Long> jogosGame) {
+		this.jogos = jogosGame;
 	}
 
-	public Integer getStatus() {
+	public Integer getStatusCompra() {
 		return status;
 	}
 
-	public void setStatus(Integer status) {
-		this.status = status;
+	public void setStatusCompra(Integer statusCompra) {
+		this.status = statusCompra;
 	}
 
 }

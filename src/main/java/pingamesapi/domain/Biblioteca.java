@@ -24,7 +24,7 @@ public class Biblioteca implements Serializable {
 	private Long id;
 	
 	@JsonIgnore
-	@OneToOne(mappedBy="jogos")
+	@OneToOne(mappedBy="biblioteca")
 	private Usuario usuario;
 	
 	@ManyToMany(mappedBy="bibliotecas")

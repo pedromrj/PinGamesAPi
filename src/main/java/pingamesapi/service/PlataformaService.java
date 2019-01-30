@@ -3,6 +3,7 @@ package pingamesapi.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +31,6 @@ public class PlataformaService {
 		if (plataformaRepository.existsById(obj.getId())) {
 			return plataformaRepository.save(obj);
 		}
-
 		throw new ObjectNotFoundException(
 				"Empresa não encotrada! id:" + obj.getId() + ", Tipo:" + Plataforma.class.getName());
 	}
@@ -43,18 +43,21 @@ public class PlataformaService {
 	}
 
 	private Plataforma fromDTO(CadastraPlataforma obj) {
-		Plataforma plat = new Plataforma();
-		plat.setPlataforma(obj.getPlataforma());
-		return plat;
+		ModelMapper modelMapper = new ModelMapper();
+		Plataforma plataforma = modelMapper.map(obj, Plataforma.class);
+		return plataforma;
+	}
+
+	private ReadPlataforma buildDTO(Plataforma plat) {
+		ModelMapper model = new ModelMapper();
+		ReadPlataforma plata = model.map(plat, ReadPlataforma.class);
+		return plata;
 	}
 
 	private List<ReadPlataforma> buildListDTO(List<Plataforma> platBD) {
 		List<ReadPlataforma> plataformas = new ArrayList<ReadPlataforma>();
 		for (Plataforma plataforma : platBD) {
-			ReadPlataforma aux = new ReadPlataforma();
-			aux.setId(plataforma.getId());
-			aux.setNome(plataforma.getPlataforma());
-			plataformas.add(aux);
+			plataformas.add(buildDTO(plataforma));
 		}
 		return plataformas;
 	}
