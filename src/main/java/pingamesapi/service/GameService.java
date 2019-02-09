@@ -1,17 +1,22 @@
 package pingamesapi.service;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import pingamesapi.domain.Empresa;
 import pingamesapi.domain.Game;
 import pingamesapi.domain.Plataforma;
+import pingamesapi.dto.PageDTO;
 import pingamesapi.dto.Cadastra.CadastraGame;
 import pingamesapi.dto.Read.ReadGame;
 import pingamesapi.repository.GameRepository;
@@ -85,12 +90,44 @@ public class GameService {
 		return readGame;
 	}
 
-
-	public Page<ReadGame> pesquisar(Integer page, Integer line) {
-		PageRequest pageRequest = PageRequest.of(page,line);
+	public Page<Game> pesquisar(Pageable pageable) {
+		return gameRepository.findAll(pageable); 
+		/*
+				PageRequest pageRequest = PageRequest.of(page,line);
 		Page<Game> aux = gameRepository.findAll(pageRequest);
 		Page<ReadGame> lista = aux.map(game -> new ReadGame(game));
+		
 		return lista;
+	*/
 	}
-
+	
+	public List<Game> buscarPorParam(Game game) {
+			ExampleMatcher matcher = ExampleMatcher.matchingAll()
+					.withMatcher("nome", match -> match.contains())
+					.withMatcher("genero", match -> match.contains())
+					.withIgnoreCase()
+					.withIgnoreNullValues();
+					return gameRepository.findAll(Example.of(game,matcher));
+	}
+	/*
+	public PageDTO page(Integer page, Integer size) {
+		List<Game> bd = gameRepository.findAll();
+		List<Game> listagem = new ArrayList<Game>();
+		for (int i = ((page * size)- size); i < (page* size); i++) {
+			listagem.add(bd.get(i));
+		}
+		int qtdpagina = bd.size()/size;
+		int paginaAtual = page;
+		int paginaFinal = qtdpagina;
+		int proxPagina = qtdpagina > page +1? paginaAtual+1:paginaAtual;
+		int paginaAnterior = paginaAtual -1 > 0 ? paginaAtual-1: paginaAtual;
+		int qtdItens = listagem.size();
+		
+		PageDTO pageDTO = new PageDTO(listagem, paginaAtual, paginaFinal, qtdpagina, proxPagina, paginaAnterior, qtdItens);
+		return pageDTO;
+		
+		
+		
+	}
+	*/
 }

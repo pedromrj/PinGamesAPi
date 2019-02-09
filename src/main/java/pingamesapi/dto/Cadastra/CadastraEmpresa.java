@@ -3,12 +3,15 @@ package pingamesapi.dto.Cadastra;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import pingamesapi.annotations.CNPJValidator;
+
 public class CadastraEmpresa {
 	
 	@NotBlank
 	private String nomeEmpresa;
 	
 	@NotBlank
+	@CNPJValidator
 	private String cnpjEmpresa;
 	
 	@NotNull

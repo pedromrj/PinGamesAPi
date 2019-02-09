@@ -1,7 +1,12 @@
 package pingamesapi.controller;
 
+import java.util.List;
+
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -14,8 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import pingamesapi.domain.Game;
+import pingamesapi.dto.PageDTO;
 import pingamesapi.dto.Cadastra.CadastraGame;
-import pingamesapi.dto.Read.ReadGame;
 import pingamesapi.service.GameService;
 
 @Controller
@@ -26,7 +31,7 @@ public class GameController {
 	private GameService gameService;
 	
 	@PostMapping
-	public ResponseEntity<Game> create(@RequestBody CadastraGame obj){
+	public ResponseEntity<Game> crgeate(@Valid @RequestBody CadastraGame obj){
 		return new ResponseEntity<Game>(gameService.create(obj), HttpStatus.CREATED);
 	}
 	
@@ -35,11 +40,13 @@ public class GameController {
 		obj.setId(id);
 		return new ResponseEntity<Game>(gameService.update(obj), HttpStatus.OK);
 	}
+	@GetMapping
+	public ResponseEntity<Page<Game>> pageGame(Pageable pageable) {	
+		return ResponseEntity.ok().body(gameService.pesquisar(pageable));
+	}
 	
-	@GetMapping("/")
-	public ResponseEntity<Page<ReadGame>> pageGame(
-			@RequestParam (value = "page", defaultValue = "0") Integer page,
-			@RequestParam(value = "line",defaultValue = "20") Integer line) {	
-		return ResponseEntity.ok().body(gameService.pesquisar(page, line));
+	@GetMapping("/pesquisar")
+	public ResponseEntity<List<Game>> findByNameAndGenero(Game game){
+		return ResponseEntity.ok().body(gameService.buscarPorParam(game));
 	}
 }

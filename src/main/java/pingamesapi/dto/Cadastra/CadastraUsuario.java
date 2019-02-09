@@ -1,16 +1,25 @@
 package pingamesapi.dto.Cadastra;
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+
+import pingamesapi.annotations.CPFValidator;
+import pingamesapi.annotations.NotInteiro;
 
 public class CadastraUsuario {
-	
-	@NotBlank
+
+	@NotEmpty
+	@Size(min = 4)
+	@NotInteiro
 	private String nome;
-	
-	@NotBlank
+
+	@NotEmpty
+	@Size(min = 11, max = 11, message = "Tamanho deve ser 11")
+	@CPFValidator
 	private String cpf;
-	
-	@NotBlank
+
+	@NotEmpty
+	@Size(min = 8, max = 8, message = "Tamanho deve ser 8")
 	private String dataNascimento;
 
 	public String getNome() {
@@ -36,7 +45,5 @@ public class CadastraUsuario {
 	public void setDataNascimento(String dataNascimento) {
 		this.dataNascimento = dataNascimento;
 	}
-
-	
 
 }

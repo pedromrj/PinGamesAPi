@@ -1,10 +1,10 @@
 package pingamesapi.dto.Cadastra;
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 
 public class CadastraPlataforma {
 	
-	@NotBlank
+	@NotEmpty
 	private String plataforma;
 
 	public String getPlataforma() {
